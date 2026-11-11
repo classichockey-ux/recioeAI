@@ -1,16 +1,26 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>RecipeAI - AI 레시피 추천</title>
 
     <style>
+
+        /* ==============================
+           전체 기본 설정
+        ============================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -19,6 +29,10 @@
             line-height: 1.6;
         }
 
+
+        /* ==============================
+           상단 RecipeAI 영역
+        ============================== */
         header {
             background: linear-gradient(135deg, #ff8a00, #ff5e62);
             color: white;
@@ -36,263 +50,626 @@
             opacity: 0.95;
         }
 
+
+        /* 지금 시작하기 버튼 */
         .btn {
             display: inline-block;
             margin-top: 30px;
             padding: 14px 30px;
+
             background: white;
             color: #ff5e62;
+
             text-decoration: none;
+
             border-radius: 30px;
+
             font-weight: bold;
+
             transition: 0.3s;
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
+
+        /* ==============================
+           공통 Section
+        ============================== */
         section {
             max-width: 1100px;
+
             margin: auto;
+
             padding: 70px 20px;
         }
 
         h2 {
             text-align: center;
+
             margin-bottom: 40px;
+
             color: #ff5e62;
         }
 
+
+        /* ==============================
+           재료 입력 영역
+        ============================== */
+        .recipe-area {
+            max-width: 600px;
+
+            margin: 30px auto;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* 재료 입력창 */
+        #ingredients {
+            width: 100%;
+
+            padding: 15px;
+
+            font-size: 16px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            margin-bottom: 15px;
+        }
+
+        #ingredients:focus {
+            outline: none;
+
+            border-color: #ff5e62;
+
+            box-shadow:
+                0 0 0 3px rgba(255, 94, 98, 0.12);
+        }
+
+
+        /* 입력 확인 버튼 */
+        #recommendButton {
+            width: 100%;
+
+            padding: 15px;
+
+            background: #ff5e62;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        #recommendButton:hover {
+            background: #e94f54;
+        }
+
+
+        /* 입력 결과 */
+        #result {
+            margin-top: 25px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            text-align: center;
+
+            color: #444;
+        }
+
+
+        /* ==============================
+           주요 기능 Grid
+        ============================== */
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
             gap: 25px;
         }
 
+
+        /* 각각의 카드 */
         .card {
+            height: 100%;
+
             background: white;
+
             border-radius: 15px;
+
             padding: 30px;
+
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,.08);
-            transition: .3s;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
         }
 
         .card:hover {
             transform: translateY(-8px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.12);
         }
 
+
+        /* 카드 아이콘 */
         .icon {
             font-size: 50px;
+
             margin-bottom: 15px;
         }
 
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+
+        /* ==============================
+           개발자 블로그 링크
+        ============================== */
+        .card-link {
+            text-decoration: none;
+
+            color: inherit;
+
+            display: block;
+        }
+
+
+        /* ==============================
+           RecipeAI 설명
+        ============================== */
+        .about-text {
+            text-align: center;
+
+            max-width: 800px;
+
+            margin: auto;
+
+            font-size: 18px;
+        }
+
+
+        /* ==============================
+           Footer
+        ============================== */
         footer {
             text-align: center;
+
             padding: 30px;
+
             background: #222;
+
             color: white;
         }
 
-        @media(max-width:768px){
-            header h1{
-                font-size:2.2rem;
+
+        /* ==============================
+           모바일 화면
+        ============================== */
+        @media (max-width: 768px) {
+
+            header {
+                padding: 60px 20px;
             }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            section {
+                padding: 50px 20px;
+            }
+
+            .recipe-area {
+                padding: 25px 20px;
+            }
+
         }
-        .card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            }
+
     </style>
+
 </head>
+
 
 <body>
 
-<header>
-    <h1>🍳 RecipeAI</h1>
-    <p>AI가 당신만의 레시피를 추천해 드립니다.</p>
 
-    <a href="#recipe" class="btn">
-        지금 시작하기
-    </a>
-</header>
+    <!-- =================================
+         1. 상단 RecipeAI
+    ================================== -->
 
+    <header>
 
-<!-- 재료 입력 영역 -->
-<section id="recipe">
+        <h1>🍳 RecipeAI</h1>
 
-    <h2>🍳 나만의 레시피 찾기</h2>
+        <p>
+            AI가 당신만의 레시피를 추천해 드립니다.
+        </p>
 
-    <p style="text-align:center;">
-        냉장고에 있는 재료를 입력하세요.
-    </p>
+        <!--
+            #recipe는 아래의
+            id="recipe" 위치로 이동한다는 뜻입니다.
+        -->
+        <a href="#recipe" class="btn">
+            지금 시작하기
+        </a>
 
-    <div style="max-width:600px; margin:30px auto;">
-
-        <input
-            type="text"
-            id="ingredients"
-            placeholder="예: 두부, 계란, 김치"
-            style="
-                width:100%;
-                padding:15px;
-                font-size:16px;
-                margin-bottom:15px;
-            "
-        >
-
-        <button
-            id="recommendButton"
-            style="
-                width:100%;
-                padding:15px;
-                background:#ff5e62;
-                color:white;
-                border:none;
-                border-radius:8px;
-                cursor:pointer;
-            "
-        >
-            입력 확인
-        </button>
-
-        <p
-            id="result"
-            style="
-                margin-top:25px;
-                font-size:18px;
-                text-align:center;
-            "
-        ></p>
-
-    </div>
-
-</section>
+    </header>
 
 
-<!-- 주요 기능 -->
-<section>
 
-    <h2>RecipeAI 주요 기능</h2>
+    <!-- =================================
+         2. 재료 입력
+    ================================== -->
 
-    <div class="features">
+    <section id="recipe">
 
-        <div class="card">
-            <div class="icon">🤖</div>
+        <h2>
+            🍳 나만의 레시피 찾기
+        </h2>
 
-            <h3>AI 레시피 추천</h3>
 
-            <p>
-                냉장고 속 재료만 입력하면
-                AI가 맞춤 레시피를 추천합니다.
-            </p>
+        <p style="text-align:center;">
+
+            냉장고에 있는 재료를 입력하세요.
+
+        </p>
+
+
+        <div class="recipe-area">
+
+
+            <!--
+                사용자가 재료를 입력하는 공간
+
+                id="ingredients"라는 이름을
+                JavaScript에서 사용합니다.
+            -->
+
+            <input
+                type="text"
+                id="ingredients"
+                placeholder="예: 두부, 계란, 김치"
+            >
+
+
+            <!--
+                버튼에도 recommendButton이라는
+                이름을 붙였습니다.
+            -->
+
+            <button
+                type="button"
+                id="recommendButton"
+            >
+                입력 확인
+            </button>
+
+
+            <!--
+                처음에는 비어 있습니다.
+
+                JavaScript가 여기에
+                입력한 재료를 표시합니다.
+            -->
+
+            <p
+                id="result"
+                aria-live="polite"
+            ></p>
+
+
         </div>
 
-
-        <div class="card">
-            <div class="icon">🥗</div>
-
-            <h3>건강한 식단</h3>
-
-            <p>
-                칼로리와 영양 정보를 고려하여
-                건강한 식단을 제공합니다.
-            </p>
-        </div>
+    </section>
 
 
-        <div class="card">
-            <div class="icon">⏱️</div>
 
-            <h3>빠른 요리</h3>
+    <!-- =================================
+         3. RecipeAI 주요 기능
+    ================================== -->
 
-            <p>
-                조리 시간과 난이도에 맞는
-                레시피를 쉽게 찾아보세요.
-            </p>
-        </div>
+    <section>
+
+        <h2>
+            RecipeAI 주요 기능
+        </h2>
 
 
-        <a href="https://kopronty.blogspot.com/"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="card-link">
+        <div class="features">
+
+
+            <!-- AI 레시피 추천 -->
 
             <div class="card">
 
-                <div class="icon">✍️</div>
+                <div class="icon">
+                    🤖
+                </div>
 
-                <h3>개발자 블로그</h3>
+                <h3>
+                    AI 레시피 추천
+                </h3>
 
                 <p>
-                    AI, 재테크, 철학 그리고 바이브 코딩의
-                    학습과 생각을 기록합니다.
+                    냉장고 속 재료만 입력하면
+                    AI가 맞춤 레시피를 추천합니다.
                 </p>
 
             </div>
 
-        </a>
-
-    </div>
-
-</section>
 
 
-<!-- RecipeAI 소개 -->
-<section>
+            <!-- 건강한 식단 -->
 
-    <h2>왜 RecipeAI인가?</h2>
+            <div class="card">
 
-    <p style="
-        text-align:center;
-        max-width:800px;
-        margin:auto;
-        font-size:18px;
-    ">
-        RecipeAI는 인공지능을 활용하여 사용자의 재료,
-        취향, 건강 상태를 분석하고 가장 적합한 레시피를 추천합니다.
-        매일 새로운 요리를 쉽고 즐겁게 경험해 보세요.
-    </p>
+                <div class="icon">
+                    🥗
+                </div>
 
-</section>
+                <h3>
+                    건강한 식단
+                </h3>
 
+                <p>
+                    칼로리와 영양 정보를 고려하여
+                    건강한 식단을 제공합니다.
+                </p>
 
-<footer>
-
-    <p>
-        © 2026 RecipeAI. All Rights Reserved.
-    </p>
-
-</footer>
+            </div>
 
 
-<!-- 여기부터 JavaScript -->
-<script>
 
-    const ingredients =
-        document.getElementById("ingredients");
+            <!-- 빠른 요리 -->
 
-    const recommendButton =
-        document.getElementById("recommendButton");
+            <div class="card">
 
-    const result =
-        document.getElementById("result");
+                <div class="icon">
+                    ⏱️
+                </div>
+
+                <h3>
+                    빠른 요리
+                </h3>
+
+                <p>
+                    조리 시간과 난이도에 맞는
+                    레시피를 쉽게 찾아보세요.
+                </p>
+
+            </div>
 
 
-    recommendButton.addEventListener("click", function() {
 
-        const userInput = ingredients.value;
+            <!-- 개발자 블로그 -->
 
-        result.textContent =
-            "입력한 재료: " + userInput;
+            <a
+                href="https://kopronty.blogspot.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card-link"
+            >
 
-    });
+                <div class="card">
 
-</script>
+                    <div class="icon">
+                        ✍️
+                    </div>
+
+                    <h3>
+                        개발자 블로그
+                    </h3>
+
+                    <p>
+                        AI, 재테크, 철학 그리고
+                        바이브 코딩의 학습과 생각을 기록합니다.
+                    </p>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         4. RecipeAI 소개
+    ================================== -->
+
+    <section>
+
+        <h2>
+            왜 RecipeAI인가?
+        </h2>
+
+
+        <p class="about-text">
+
+            RecipeAI는 인공지능을 활용하여
+            사용자의 재료, 취향, 건강 상태를 분석하고
+            가장 적합한 레시피를 추천합니다.
+
+            매일 새로운 요리를 쉽고 즐겁게
+            경험해 보세요.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================
+         5. Footer
+    ================================== -->
+
+    <footer>
+
+        <p>
+            © 2026 RecipeAI.
+            All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =================================
+         6. JavaScript
+    ================================== -->
+
+    <script>
+
+        /*
+        ----------------------------------
+        STEP 1
+
+        HTML에서 id="ingredients"라는
+        입력창을 찾습니다.
+        ----------------------------------
+        */
+
+        const ingredients =
+            document.getElementById("ingredients");
+
+
+        /*
+        ----------------------------------
+        STEP 2
+
+        id="recommendButton"이라는
+        버튼을 찾습니다.
+        ----------------------------------
+        */
+
+        const recommendButton =
+            document.getElementById("recommendButton");
+
+
+        /*
+        ----------------------------------
+        STEP 3
+
+        결과를 표시할
+        id="result"를 찾습니다.
+        ----------------------------------
+        */
+
+        const result =
+            document.getElementById("result");
+
+
+        /*
+        ----------------------------------
+        STEP 4
+
+        사용자가 버튼을 클릭하는 것을
+        기다립니다.
+        ----------------------------------
+        */
+
+        recommendButton.addEventListener(
+            "click",
+            function () {
+
+
+                /*
+                입력창에 사용자가 적은
+                글자를 가져옵니다.
+                */
+
+                const userInput =
+                    ingredients.value.trim();
+
+
+                /*
+                아무것도 입력하지 않았다면
+                안내 메시지를 보여줍니다.
+                */
+
+                if (userInput === "") {
+
+                    result.textContent =
+                        "재료를 한 가지 이상 입력해 주세요.";
+
+                    ingredients.focus();
+
+                    return;
+                }
+
+
+                /*
+                정상적으로 입력했다면
+                화면에 입력 내용을 보여줍니다.
+                */
+
+                result.textContent =
+                    "입력한 재료: " + userInput;
+
+            }
+        );
+
+
+        /*
+        ----------------------------------
+        STEP 5
+
+        입력창에서 Enter를 눌러도
+        동일하게 작동하도록 합니다.
+        ----------------------------------
+        */
+
+        ingredients.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    recommendButton.click();
+
+                }
+
+            }
+        );
+
+    </script>
 
 
 </body>
+
 </html>
